@@ -10,12 +10,8 @@
     <div class="container">
         <h1>Number Ninja</h1>
         <div id="game-area">
-            <div id="mascot-game-area">
-                <img id="mascot-game" src="Ninja.jpg" alt="Ninja Mascot" style="width:60px;" onerror="this.onerror=null;this.src='https://twemoji.maxcdn.com/v/latest/svg/1f977.svg';">
-            </div>
             <div id="question"></div>
             <div id="choices"></div>
-            <div id="feedback"></div>
             <div id="score" style="display:none;">Score: 0</div>
             <div id="progress-bar" style="height:16px; background:#eee; border-radius:8px; margin:10px 0; display:none;"><div id="progress" style="height:100%; width:0; background:#f9d423; border-radius:8px;"></div></div>
             <button id="hint-btn" style="display:none;">Hint</button>
@@ -23,7 +19,9 @@
             <button id="stop-btn" style="display:none;">Stop Game</button>
         </div>
         <div id="start-area">
-            <!-- Mascot image removed from start area to avoid duplicate -->
+            <div id="mascot-start-area">
+                <img id="mascot-start" src="Ninja.jpg" alt="Ninja Mascot" style="width:60px;" onerror="this.onerror=null;this.src='https://twemoji.maxcdn.com/v/latest/svg/1f977.svg';">
+            </div>
             <h2>Welcome to Number Ninja!</h2>
             <div id="profile-area">
                 <label for="player-name">Your Name:</label>
@@ -51,13 +49,6 @@
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
-            </select>
-            <h3>Theme</h3>
-            <select id="theme-select">
-                <option value="default">Default</option>
-                <option value="dark">Dark</option>
-                <option value="ocean">Ocean</option>
-                <option value="forest">Forest</option>
             </select>
             <button id="start-btn">Start Game</button>
         </div>

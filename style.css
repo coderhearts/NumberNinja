@@ -5,10 +5,10 @@ body {
     padding: 0;
 }
 /* Mascot styles */
-#mascot-area, #mascot-game-area {
-    margin-bottom: 12px;
+#mascot-area, #mascot-start-area {
+    margin-bottom: 4px;
 }
-#mascot, #mascot-game {
+#mascot, #mascot-start {
     border-radius: 50%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     background: #fff;
@@ -17,7 +17,7 @@ body {
 /* Container styles */
 .container {
     max-width: 400px;
-    margin: 40px auto;
+    margin: 10px auto;
     background: #fffbe6;
     border-radius: 16px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
@@ -26,7 +26,14 @@ body {
 }
 h1 {
     color: #ff4e50;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
+}
+h2 {
+    color: #2e7d32;
+    margin: 8px 0;
+}
+h3 {
+    margin: 12px 0 8px 0;
 }
 #question {
     font-size: 2em;
@@ -49,11 +56,6 @@ h1 {
 #score {
     font-size: 1.2em;
     margin: 16px 0;
-}
-#feedback {
-    font-size: 1.1em;
-    margin: 12px 0;
-    min-height: 24px;
 }
 /* Button styles */
 /* Button styles */
@@ -121,7 +123,7 @@ h1 {
     outline: none;
 }
 /* Dropdown styles */
-#mode-select, #difficulty-select, #theme-select {
+#mode-select, #difficulty-select {
     background: #fffbe6;
     color: #333;
     border: 2px solid #f9d423;
@@ -136,7 +138,7 @@ h1 {
     appearance: auto;
     transition: border 0.2s, box-shadow 0.2s;
 }
-#mode-select:focus, #difficulty-select:focus, #theme-select:focus {
+#mode-select:focus, #difficulty-select:focus {
     border: 2px solid #ff4e50;
     box-shadow: 0 4px 16px rgba(255,78,80,0.15);
     outline: none;

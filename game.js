@@ -4,7 +4,6 @@ const stopBtn = document.getElementById('stop-btn');
 const restartBtn = document.getElementById('restart-btn');
 const questionDiv = document.getElementById('question');
 const choicesDiv = document.getElementById('choices');
-const feedbackDiv = document.getElementById('feedback');
 const scoreDiv = document.getElementById('score');
 const startArea = document.getElementById('start-area');
 const gameArea = document.getElementById('game-area');
@@ -18,7 +17,6 @@ const opAdd = document.getElementById('op-add');
 const opSub = document.getElementById('op-sub');
 const opMul = document.getElementById('op-mul');
 const difficultySelect = document.getElementById('difficulty-select');
-const themeSelect = document.getElementById('theme-select');
 const mascot = document.getElementById('mascot');
 const mascotGame = document.getElementById('mascot-game');
 
@@ -35,7 +33,6 @@ let maxStreak = 0;
 let playerName = '';
 let selectedOps = ['+', '-', '×'];
 let difficulty = 'easy';
-let theme = 'default';
 
 const correctSound = new Audio('correct.mp3');
 const wrongSound = new Audio('wrong.mp3');
@@ -46,12 +43,23 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function generateQuestion(difficulty = 1) {
-    // Difficulty increases number range and may add more choices
-    const ops = ['+', '-', '×'];
+function getDifficultyLevel() {
+    switch(difficulty) {
+        case 'easy': return 1;
+        case 'medium': return 2;
+        case 'hard': return 3;
+        default: return 1;
+    }
+}
+
+function generateQuestion(difficultyOverride = null) {
+    // Convert difficulty to numeric value
+    let difficultyLevel = difficultyOverride || getDifficultyLevel();
+    
+    const ops = selectedOps;
     const op = ops[getRandomInt(0, ops.length - 1)];
     let a, b, answer;
-    let maxNum = 20 + difficulty * 10;
+    let maxNum = 10 + difficultyLevel * 15;
     if (op === '+') {
         a = getRandomInt(1, maxNum);
         b = getRandomInt(1, maxNum);
@@ -61,18 +69,20 @@ function generateQuestion(difficulty = 1) {
         b = getRandomInt(1, a);
         answer = a - b;
     } else {
-        a = getRandomInt(1, 10 + difficulty * 2);
-        b = getRandomInt(1, 10 + difficulty * 2);
+        let multMax = difficultyLevel === 1 ? 10 : difficultyLevel === 2 ? 15 : 20;
+        a = getRandomInt(1, multMax);
+        b = getRandomInt(1, multMax);
         answer = a * b;
     }
     // Generate choices
     let choices = [answer];
-    let choiceCount = 4 + Math.floor(difficulty / 3);
+    let choiceCount = difficultyLevel === 1 ? 4 : difficultyLevel === 2 ? 5 : 6;
     while (choices.length < choiceCount) {
         let wrong;
-        if (op === '+') wrong = answer + getRandomInt(-5 - difficulty, 5 + difficulty);
-        else if (op === '-') wrong = answer + getRandomInt(-5 - difficulty, 5 + difficulty);
-        else wrong = answer + getRandomInt(-10 - difficulty, 10 + difficulty);
+        let range = difficultyLevel * 5;
+        if (op === '+') wrong = answer + getRandomInt(-range, range);
+        else if (op === '-') wrong = answer + getRandomInt(-range, range);
+        else wrong = answer + getRandomInt(-range * 2, range * 2);
         if (wrong !== answer && !choices.includes(wrong) && wrong >= 0) choices.push(wrong);
     }
     choices = choices.sort(() => Math.random() - 0.5);
@@ -81,22 +91,18 @@ function generateQuestion(difficulty = 1) {
 
 function setupQuestions() {
     questions = [];
-    let difficulty = 1;
     for (let i = 0; i < totalQuestions; i++) {
-        difficulty = 1 + Math.floor(i / 5); // Increase every 5 questions
-        questions.push(generateQuestion(difficulty));
+        questions.push(generateQuestion());
     }
 }
 
 function showQuestion() {
-    feedbackDiv.textContent = '';
     nextBtn.style.display = 'none';
     stopBtn.style.display = 'inline-block';
     let q;
     if (mode === 'endless' || mode === 'timed' || mode === 'lives') {
-        // Generate on the fly with increasing difficulty
-        let difficulty = 1 + Math.floor(score / 5);
-        q = generateQuestion(difficulty);
+        // Generate on the fly using selected difficulty
+        q = generateQuestion();
         questions = [q];
         currentQuestion = 0;
     } else {
@@ -129,12 +135,10 @@ function selectAnswer(choice) {
         streak += 1;
         maxStreak = Math.max(maxStreak, streak);
         let bonus = streak > 1 ? ` (+${streak - 1} streak bonus!)` : '';
-        feedbackDiv.textContent = `🎉 Correct!${bonus}`;
         score += streak > 1 ? streak - 1 : 0;
         correctSound.currentTime = 0;
         correctSound.play();
     } else {
-        feedbackDiv.textContent = '❌ Try again!';
         streak = 0;
         if (mode === 'lives') {
             lives -= 1;
@@ -187,6 +191,21 @@ function startGame() {
     mode = modeSelect.value;
     lives = 3;
     timeLeft = 60;
+    
+    // Update selected operations based on checkboxes
+    selectedOps = [];
+    if (opAdd.checked) selectedOps.push('+');
+    if (opSub.checked) selectedOps.push('-');
+    if (opMul.checked) selectedOps.push('×');
+    
+    // Ensure at least one operation is selected
+    if (selectedOps.length === 0) {
+        selectedOps = ['+'];
+        opAdd.checked = true;
+    }
+    
+    // Update difficulty based on selection
+    difficulty = difficultySelect.value;
     if (mode === 'custom') {
         totalQuestions = parseInt(roundsInput.value) || 10;
         setupQuestions();
@@ -269,7 +288,6 @@ function showAchievements() {
 const hintBtn = document.getElementById('hint-btn');
 hintBtn.onclick = function() {
     const q = questions[currentQuestion];
-    feedbackDiv.textContent = `Hint: The answer is ${q.answer}`;
 };
 
 // Progress Bar
@@ -316,6 +334,7 @@ startBtn.onclick = startGame;
 nextBtn.onclick = nextQuestion;
 restartBtn.onclick = function() {
     endArea.style.display = 'none';
+    gameArea.style.display = 'none';
     startArea.style.display = 'block';
 };
 
