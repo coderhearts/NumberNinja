@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Ninja - Math Game for Kids</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Number Ninja</h1>
+        <div id="game-area">
+            <div id="mascot-game-area">
+                <img id="mascot-game" src="Ninja.jpg" alt="Ninja Mascot" style="width:60px;" onerror="this.onerror=null;this.src='https://twemoji.maxcdn.com/v/latest/svg/1f977.svg';">
+            </div>
+            <div id="question"></div>
+            <div id="choices"></div>
+            <div id="feedback"></div>
+            <div id="score" style="display:none;">Score: 0</div>
+            <div id="progress-bar" style="height:16px; background:#eee; border-radius:8px; margin:10px 0; display:none;"><div id="progress" style="height:100%; width:0; background:#f9d423; border-radius:8px;"></div></div>
+            <button id="hint-btn" style="display:none;">Hint</button>
+            <button id="next-btn" style="display:none;">Next</button>
+            <button id="stop-btn" style="display:none;">Stop Game</button>
+        </div>
+        <div id="start-area">
+            <!-- Mascot image removed from start area to avoid duplicate -->
+            <h2>Welcome to Number Ninja!</h2>
+            <div id="profile-area">
+                <label for="player-name">Your Name:</label>
+                <input type="text" id="player-name" maxlength="12" placeholder="Enter name" class="fancy-input">
+            </div>
+            <h3>Choose Game Mode</h3>
+            <select id="mode-select">
+                <option value="endless">Endless</option>
+                <option value="timed">Timed (60s)</option>
+                <option value="lives">Lives (3 mistakes)</option>
+                <option value="custom">Custom Rounds</option>
+            </select>
+            <div id="custom-rounds" style="display:none; margin-top:10px;">
+                <label for="rounds-input">Number of Questions:</label>
+                <input type="number" id="rounds-input" min="1" max="100" value="10" style="width:60px;">
+            </div>
+            <h3>Math Operations</h3>
+            <div id="operation-area">
+                <label><input type="checkbox" id="op-add" checked> Addition</label>
+                <label><input type="checkbox" id="op-sub" checked> Subtraction</label>
+                <label><input type="checkbox" id="op-mul" checked> Multiplication</label>
+            </div>
+            <h3>Difficulty</h3>
+            <select id="difficulty-select">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <h3>Theme</h3>
+            <select id="theme-select">
+                <option value="default">Default</option>
+                <option value="dark">Dark</option>
+                <option value="ocean">Ocean</option>
+                <option value="forest">Forest</option>
+            </select>
+            <button id="start-btn">Start Game</button>
+        </div>
+        <div id="end-area" style="display:none;">
+            <h2>Game Over!</h2>
+            <div id="final-score"></div>
+            <div id="facts-review"></div>
+            <div id="achievements-area"></div>
+            <div id="leaderboard-area">
+                <h3>Leaderboard</h3>
+                <ul id="leaderboard-list"></ul>
+            </div>
+            <button id="share-btn">Share Score</button>
+            <button id="restart-btn">Play Again</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
